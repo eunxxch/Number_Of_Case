@@ -1,5 +1,4 @@
 // 아이콘 컴포넌트
-
 // 아이콘 경로 지정 및 이름 지정
 import rockImg from './assets/rock.svg'
 import scissorImg from './assets/scissor.svg'

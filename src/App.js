@@ -1,16 +1,53 @@
-// 가위바위보 버튼 컴포넌트 불러오기
+import { useState } from 'react';
+import Button from './ResetButton';
 import HandButton from './HandButton';
-import ResetButton from './ResetButton';
+import HandIcon from './HandIcon';
+import { compareHand, generateRandomHand } from './utils';
+
+// 초기값 지정
+const INITIAL_VALUE = 'rock';
+
+// 가위바위보 승패 결과
+function getResult(me, other) {
+  const comparison = compareHand(me, other);
+  if (comparison > 0) return '승리';
+  if (comparison < 0) return '패배';
+  return '무승부';
+}
 
 function App() {
-  const handleIconClick = (value) => console.log(value);
-  const handleClearClick = () => console.log('처음부터');
+  // hand와 otherHand를 state로 바꾸어 주세요
+  const [hand, setHand] = useState(INITIAL_VALUE);
+  const [otherHand, setOtherHand] = useState(INITIAL_VALUE);
+
+  const handleButtonClick = (nextHand) => {
+    const nextOtherHand = generateRandomHand();
+    // hand의 값을 nextHand=value 로 바꿔주세요
+    setHand(nextHand);
+    // otherHand의 값을 generateRandomHand()의 리턴 값으로 바꿔주세요
+    setOtherHand(nextOtherHand);
+  };
+
+  const handleClearClick = () => {
+    // hand와 otherHand의 값을 'rock' 으로 변경해주세요
+    setHand(INITIAL_VALUE); 
+    setOtherHand(INITIAL_VALUE); 
+  };
+
   return (
     <div>
-      <HandButton value="rock" onClick={handleIconClick} />
-      <HandButton value="scissor" onClick={handleIconClick} />
-      <HandButton value="paper" onClick={handleIconClick} />
-      <ResetButton onClick={handleClearClick}>처음부터</ResetButton>
+      <Button onClick={handleClearClick}>처음부터</Button>
+      <p>{getResult(hand, otherHand)}</p>
+      <div>
+        <HandIcon value={hand} />
+        VS
+        <HandIcon value={otherHand} />
+      </div>
+      <div>
+        <HandButton value="rock" onClick={handleButtonClick} />
+        <HandButton value="scissor" onClick={handleButtonClick} />
+        <HandButton value="paper" onClick={handleButtonClick} />
+      </div>
     </div>
   );
 }

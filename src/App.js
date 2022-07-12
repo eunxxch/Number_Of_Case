@@ -19,19 +19,25 @@ function App() {
   // hand와 otherHand를 state로 바꾸어 주세요
   const [hand, setHand] = useState(INITIAL_VALUE);
   const [otherHand, setOtherHand] = useState(INITIAL_VALUE);
+  const [gameHistory, setGameHistory] = useState([]);
 
   const handleButtonClick = (nextHand) => {
     const nextOtherHand = generateRandomHand();
+    const nextHistoryItem = getResult(nextHand, nextOtherHand);
     // hand의 값을 nextHand=value 로 바꿔주세요
     setHand(nextHand);
     // otherHand의 값을 generateRandomHand()의 리턴 값으로 바꿔주세요
     setOtherHand(nextOtherHand);
+    // gameHistory에 nextHistoryItem 을 추가해주세요
+    // gameHistory 는 참조형이니까, setGameHistory 함수로 값을 변경할 때는 매번 새로운 값을 만들어 주어야 합니다.
+    setGameHistory([...gameHistory, nextHistoryItem]);
   };
 
   const handleClearClick = () => {
     // hand와 otherHand의 값을 'rock' 으로 변경해주세요
     setHand(INITIAL_VALUE); 
-    setOtherHand(INITIAL_VALUE); 
+    setOtherHand(INITIAL_VALUE);
+    setGameHistory([]);
   };
 
   return (
@@ -43,6 +49,7 @@ function App() {
         VS
         <HandIcon value={otherHand} />
       </div>
+      <p>승부 기록 : {gameHistory.join(', ')}</p>
       <div>
         <HandButton value="rock" onClick={handleButtonClick} />
         <HandButton value="scissor" onClick={handleButtonClick} />

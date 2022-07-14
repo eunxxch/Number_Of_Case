@@ -61,6 +61,8 @@ function App() {
     setBet(1);
   };
 
+  const classNames = `HandButton`;
+
   return (
     <div>
       <Button onClick={handleClearClick}>처음부터</Button>
@@ -78,9 +80,9 @@ function App() {
       </div>
       <p>승부 기록 : {gameHistory.join(', ')}</p>
       <div>
-        <HandButton value="rock" onClick={handleButtonClick} />
-        <HandButton value="scissor" onClick={handleButtonClick} />
-        <HandButton value="paper" onClick={handleButtonClick} />
+        <HandButton className={classNames} value="rock" onClick={handleButtonClick} />
+        <HandButton className={classNames} value="scissor" onClick={handleButtonClick} />
+        <HandButton className={classNames} value="paper" onClick={handleButtonClick} />
       </div>
     </div>
   );

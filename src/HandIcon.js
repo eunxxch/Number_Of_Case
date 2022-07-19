@@ -13,7 +13,7 @@ const HAND_IMAGES = {
 
 // 컴포넌트 선언
 // (대문자로 시작하는 함수 생성)
-function HandIcon({ value, className }) { // value prop 설정
+function HandIcon({ value, className='' }) { // value prop 설정
   const src = HAND_IMAGES[value]; // value의 값을 반환
   return <img className={className} src={src} alt={value} />; // alt = value name
 }

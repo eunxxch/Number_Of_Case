@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Button from './ResetButton';
 import HandButton from './HandButton';
 import HandIcon from './HandIcon';
+import './App.css';
 import { compareHand, generateRandomHand } from './utils';
 
 // 초기값 지정
@@ -23,6 +24,8 @@ function App() {
   const [score, setScore] = useState(0);
   const [otherScore, setOtherScore] = useState(0);
   const [bet, setBet] = useState(1);
+  const [myWin, setMyWin] = useState('');
+  const [otherWin, setOtherWin] = useState('');
 
   const handleButtonClick = (nextHand) => {
     const nextOtherHand = generateRandomHand();
@@ -35,8 +38,18 @@ function App() {
     // gameHistory에 nextHistoryItem 을 추가해주세요
     // gameHistory 는 참조형이니까, setGameHistory 함수로 값을 변경할 때는 매번 새로운 값을 만들어 주어야 합니다.
     setGameHistory([...gameHistory, nextHistoryItem]);
-    if (comparison > 0) setScore(score + bet);
-    if (comparison < 0) setOtherScore(otherScore + bet);
+    if (comparison > 0) {
+        setScore(score + bet);
+        setMyWin('winner');
+        setOtherWin('');
+    } else if (comparison < 0) {
+        setOtherScore(otherScore + bet);
+        setOtherWin('winner');
+        setMyWin('');
+    } else {
+        setMyWin('winner');
+        setOtherWin('winner');
+    }
   };
 
   // 이벤트 핸들러에서 input 의 value 속성을 참조하려면 e.target.value 와 같이 가져올 수 있는데요, 
@@ -59,27 +72,48 @@ function App() {
     setScore(0);
     setOtherScore(0);
     setBet(1);
+    setMyWin('');
+    setOtherWin('');
   };
 
   const classNames = `HandButton`;
-
+  const myClass = `Hand ${myWin}`;
+  const otherClass = `Hand ${otherWin}`;
+    
   return (
-    <div>
-      <Button onClick={handleClearClick}>처음부터</Button>
-      <div>
-        {score} : {otherScore}
+    <div className="App">
+      <h1 className="App-heading">가위바위보</h1>
+      <Button className="App-reset" onClick={handleClearClick} />
+      <div className="App-scores">
+        <div className="Score">
+          <div className="Score-num">{score}</div>
+          <div className="Score-name">나</div>
+        </div>
+        <div className="App-versus">:</div>
+        <div className="Score">
+          <div className="Score-num">{otherScore}</div>
+          <div className="Score-name">상대</div>
+        </div>
       </div>
-      <p>{getResult(hand, otherHand)}</p>
-      <div>
-        <HandIcon value={hand} />
-        VS
-        <HandIcon value={otherHand} />
-      </div>
-      <div>
-        <input onChange={handleBetChange} type="number" value={bet} min={1} max={9}></input>
-      </div>
-      <p>승부 기록 : {gameHistory.join(', ')}</p>
-      <div>
+      <div className="Box App-box">
+        <div className="Box-inner">
+          <div className="App-hands">
+            <div className={myClass}>
+              <HandIcon className="Hand-icon" value={hand} />
+            </div>
+            <div className="App-versus">:</div>
+            <div className={otherClass}>
+              <HandIcon className="Hand-icon" value={otherHand} />
+            </div>
+          </div>
+          <div className="App-bet"> 
+            <span>배점</span><input onChange={handleBetChange} type="number" value={bet} min={1} max={9}></input>
+          </div>
+          <div class="App-history">
+            <h2>승부기록</h2>
+            <p>{gameHistory.join(', ')}</p>
+          </div>
+        </div>
         <HandButton className={classNames} value="rock" onClick={handleButtonClick} />
         <HandButton className={classNames} value="scissor" onClick={handleButtonClick} />
         <HandButton className={classNames} value="paper" onClick={handleButtonClick} />
